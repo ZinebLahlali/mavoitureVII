@@ -1,6 +1,4 @@
 <?php
-require_once './classes/database.php';
-
 
   class Article
   { private $id_article;
@@ -12,16 +10,16 @@ require_once './classes/database.php';
     private $date_publication;
 
      
-    public function __construct($id_article,  $id_client,  $id_theme, $titre,  $contenu, $tags,$date_publication)
-  {  $this->id_article = $id_article;
-     $this->id_client =  $id_client;
-     $this->id_theme =  $id_theme;
-     $this->titre = $titre;
-     $this->contenu =  $contenu;
-     $this->tags = $tags;
-     $this->date_publication = $date_publication;
+  //   public function __construct($id_article,  $id_client,  $id_theme, $titre,  $contenu, $tags,$date_publication)
+  // {  $this->id_article = $id_article;
+  //    $this->id_client =  $id_client;
+  //    $this->id_theme =  $id_theme;
+  //    $this->titre = $titre;
+  //    $this->contenu =  $contenu;
+  //    $this->tags = $tags;
+  //    $this->date_publication = $date_publication;
 
-  } 
+  // } 
 
    //getters toujour return a //value//
   public function getIdArticle()
@@ -93,7 +91,71 @@ require_once './classes/database.php';
      $this->date_publication = $date_publication;
    }
     
-   public function listerParTheme($pdo, $idTheme)
+   public static function listerParTheme($pdo, $id_theme)
+   {   $query = 'SELECT a.*, t.titre, a.contenu, a.date_publication, a.tags
+       FROM themes t
+       INNER JOIN articles a ON t.id_theme = a.id_theme WHERE a.id_theme=:id';
+       $stmt = $pdo->prepare($query);
+       $stmt->execute([":id"=>$id_theme]);
+       
+       $result = $stmt->fetchAll(PDO::FETCH_CLASS, 'Article');
+      //  $articles = [];
+
+      //  foreach($result as $row){
+      //   $article = new Article(
+      //     $row["id_article"], 
+      //     $row["id_client"], 
+      //     $row["id_theme"], 
+      //     $row["titre"], 
+      //     $row["contenu"], 
+      //     $row["tags"], 
+      //     $row["date_publication"]);
+
+      //     $articles[] = $article;
+      //  }
+
+      //  return $articles;
+    return $result;
+     
+   }
+    
+   public static function trouverParId($pdo, $id_article)
+   {   $sql = 'SELECT * FROM articles WHERE id_article = ?';
+       $stmt = $pdo->prepare($sql);
+       $stmt->execute();
+
+       $resultat = $stmt->fetchAll(PDO::FETCH_CLASS, 'Article');
+      //  $artis = [];
+      //  foreach($resultat as $row){
+      //     $arti = new Article(
+      //         $row["id_article"], 
+      //         $row["id_client"], 
+      //         $row["id_theme"], 
+      //         $row["titre"], 
+      //         $row["contenu"], 
+      //         $row["tags"], 
+      //         $row["date_publication"]);
+
+      //         $artis[] = $arti;
+      //  }
+      //  return $artis;
+    return $resultat;
+   }
+
+  public static function rechercherParTitre($pdo, $motCle, $id_theme)
+  {  $sql = "SELECT * FROM articles  WHERE titre LIKE ? AND id_theme = ?";
+     $stmt= $pdo->prepare($sql);
+     $like = '%'.$motCle.'%';
+     $stmt->execute([$like, $id_theme]);
+
+     return $stmt->fetchAll(PDO::FETCH_CLASS, "Article");
+
+     
+
+
+
+  }
+
 
 
 

@@ -127,19 +127,24 @@ MODIFY id_article INT NOT NULL AUTO_INCREMENT,
 ADD PRIMARY KEY(id_article);
 
 CREATE TABLE commentaires(
-    id_com INT PRIMARY KEY AUTO_INCREMENT,
+    id_com INT AUTO_INCREMENT PRIMARY KEY,
     id_client INT,
     id_article INT,
-    contenu VARCHAR (250),
-    date_commentaire DATE,
-    soft_deleted INT DEFAULT 0,
-    FOREIGN KEY (id_client) REFERENCES clients(id_user),
-    FOREIGN KEY (id_article) REFERENCES articles(id_article)
+    contenu VARCHAR(250),
+    date_commentaire DATETIME,
+    soft_deleted BOOLEAN DEFAULT 0
 );
 
 
+alter Table commentaires
+add Foreign Key (id_client) REFERENCES clients(id_user);
+
+alter Table commentaires
+add Foreign Key (id_article) REFERENCES articles(id_article);
 
 
 
 
+select * from articles
 
+SELECT * FROM articles  WHERE titre LIKE '%loc%';

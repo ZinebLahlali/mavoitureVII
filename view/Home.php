@@ -77,7 +77,7 @@ include_once './connexion.php';
     <div class="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition-shadow">
         <div class="relative">
             <img src="<?= htmlspecialchars($vehicule->getImage()) ?>" 
-                 alt="<?= htmlspecialchars($vehicule->getModele()) ?>" 
+                 alt="" 
                  class="w-full h-48 object-cover">
         </div>
         <div class="p-4">

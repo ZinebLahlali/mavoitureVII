@@ -1,5 +1,4 @@
 <?php
-require_once './classes/database.php';
 class Theme
 {  private $id_theme;
    private $titre;
@@ -64,13 +63,15 @@ class Theme
  { 
 
     $query = 'SELECT * FROM themes 
-    WHERE actif = 0';
-    $stmt = $pdo->preapre($query);
+    WHERE actif = 1';
+    $stmt = $pdo->prepare($query);
     $stmt->execute();
 
     $resulta = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $themes = [];
     foreach($resulta as $row){
-        $theme = new Theme($row["id"], $row["titre"], $row["description"], $row["actif"])
+        $theme = new Theme($row["id_theme"], $row["titre"], $row["description"], $row["actif"]);
+
         $themes[] = $theme;
     }
     return $themes;
