@@ -16,6 +16,7 @@ if(isset($_POST['login'])) {
     }
 
     $_SESSION['id'] = $_POST['password'];
+    
     $stmt = $pdo->prepare("SELECT * FROM clients WHERE email = ?");
     $stmt->execute([$email]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);

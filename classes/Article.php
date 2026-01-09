@@ -122,9 +122,9 @@
    public static function trouverParId($pdo, $id_article)
    {   $sql = 'SELECT * FROM articles WHERE id_article = ?';
        $stmt = $pdo->prepare($sql);
-       $stmt->execute();
+       $stmt->execute([$id_article]);
 
-       $resultat = $stmt->fetchAll(PDO::FETCH_CLASS, 'Article');
+       $stmt->setFetchMode(PDO::FETCH_CLASS, 'Article');
       //  $artis = [];
       //  foreach($resultat as $row){
       //     $arti = new Article(
@@ -139,7 +139,7 @@
       //         $artis[] = $arti;
       //  }
       //  return $artis;
-    return $resultat;
+    return $stmt->fetch();
    }
 
   public static function rechercherParTitre($pdo, $motCle, $id_theme)

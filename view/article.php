@@ -61,11 +61,12 @@
                     </form>
                 </div>
 
-         <a href="article_details.php?id=<?= $id_theme ?>">
+         
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
 
                 <?php if(!empty($articles)):?>
              <?php foreach($articles as $art):?>
+            <a href="article_details.php?id=<?= $art->getIdArticle()?>">
             <div class="bg-white rounded-2xl shadow-lg p-6 hover:shadow-2xl transition">
                 <div class="flex justify-between items-center mb-3">
                     <h2 class="text-2xl font-bold text-gray-800"><?=htmlspecialchars($art->getTitre()) ?></h2>
@@ -79,11 +80,12 @@
                     <span><?=htmlspecialchars($art->getTags()) ?></span>
                 </div>
             </div>
+            </a>
             <?php endforeach;?>
             <?php endif;?>
 
         </div>
-        </a>
+        
 
     </section>
 

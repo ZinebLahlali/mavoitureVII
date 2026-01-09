@@ -60,7 +60,7 @@
             }
             public function setContenu($contenu)
             {
-                $this->id_contenu = $id_contenu;
+                $this->contenu = $contenu;
             }
             public function setDateCommentaire($date_commentaire)
             {
@@ -86,6 +86,20 @@
 
 
              }
+
+
+              
+             
+             
+       public function create($pdo)
+            { $sql = 'INSERT INTO commentaires(contenu, date_commentaire) VALUES (:contenu, :date_commentaire)';
+                $stmt = $pdo->prepare($sql);
+                $stmt->execute([
+                ':contenu' => $this->getContenu(),
+                ':date_commentaire' => $this->getDateCommentaire()
+                ]);
+
+            }
 
 
 

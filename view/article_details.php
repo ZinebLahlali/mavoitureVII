@@ -1,18 +1,33 @@
 <?php
+session_start();
    require_once __DIR__ . '/../classes/Database.php';
    require_once __DIR__ . '/../classes/Theme.php';
-   require_once __DIR__ . '/../classes/Article.php';
+   require_once __DIR__ . '/../classes/article.php';
    require_once __DIR__ . '/../classes/Commentaire.php';
+   
+   echo $_SESSION['id'];
+
+    $id_article = $_GET['id']; 
+    
+    $id_client =  $_SESSION['id'];
 
     $id_theme = $_GET['id']; 
 
     $articles = Article::listerParTheme($pdo, $id_theme);
 
-    $commentaire = Commentaire::listerParArticle($pdo,$id_article);
+    
+    $article = Article::trouverParId($pdo, $id_article);
+
+    
+    $commentaires = Commentaire::listerPararticle($pdo,$id_article);
 
 
     if(isset($_POST['submit'])){
-       
+      $commentaire = new Commentaire();
+       $commentaire->setIdarticle($_POST['id_article']);
+       $commentaire->setContenu($_POST['commentaire']);
+
+         $commentaire->create($pdo);
     }
 
 
@@ -55,7 +70,7 @@
     <img
       src="https://via.placeholder.com/1600x600"
       class="absolute inset-0 w-full h-full object-cover"
-      alt="Article image"
+      alt="article image"
     />
     <div class="absolute inset-0 bg-black/60"></div>
 
@@ -67,38 +82,31 @@
       <h1 class="text-4xl md:text-5xl font-extrabold text-white leading-tight">
         Comment choisir la meilleure voiture de location
       </h1>
-      <?php if(!empty($articles)):?>
-      <?php foreach($articles as $art):?>
       <p class="mt-4 text-gray-200">
-        Publié le <?=htmlspecialchars($art->getDatePublication()) ?>
+        Publié le <?=htmlspecialchars($article->getDatePublication()) ?>
       </p>
-      <?php endforeach;?>
-      <?php endif;?>
     </div>
   </section>
 
   <!-- MAIN CONTENT -->
   <main class="max-w-5xl mx-auto px-6 -mt-20 relative z-10">
-    <?php if(!empty($articles)):?>
-    <?php foreach($articles as $art):?>
+    
 <article class="bg-white rounded-3xl shadow-2xl p-10">
 
     
       <div class="prose max-w-none text-gray-800 leading-relaxed">
-        <p><?=htmlspecialchars($art->getTitre()) ?></p>
+        <p><?=htmlspecialchars($article->getTitre()) ?></p>
 
-        <p><?=htmlspecialchars($art->getContenu()) ?> </p>
+        <p><?=htmlspecialchars($article->getContenu()) ?> </p>
       </div>
 
       <div class="my-10 border-t">
         <ul>
-            <li><?=htmlspecialchars($art->getTags())?></li>
+            <li><?=htmlspecialchars($article->getTags())?></li>
         </ul>
       </div>
 
 </article>
-      <?php endforeach;?>
-      <?php endif;?>
 
 
 
@@ -106,9 +114,9 @@
 
             <!-- Form de commentaire -->
             <form method="POST"  class="flex gap-2 mb-6">
-                <input
-                type="text" placeholder="Ajouter un commentaire..." name="commentaire"
-                class="flex-1 px-4 py-2 border rounded focus:outline-none focus:ring-1 focus:ring-gray-400" required/>
+             <input type="hidden" name="id_article">
+             <input type="hidden" name="id_client">
+            <input type="text" placeholder="Ajouter un commentaire..." name="commentaire" class="flex-1 px-4 py-2 border rounded focus:outline-none focus:ring-1 focus:ring-gray-400" required/>
                 <button type="submit" name="submit" class="px-4 py-2 bg-gray-800 text-white rounded hover:bg-gray-900">
                 Publier
                 </button>
