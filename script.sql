@@ -148,3 +148,6 @@ add Foreign Key (id_article) REFERENCES articles(id_article);
 select * from articles
 
 SELECT * FROM articles  WHERE titre LIKE '%loc%';
+
+SELECT c.*, a.titre FROM articles a
+inner JOIN commentaires c ON c.id_article = a.id_article WHERE a.id_article = 1 

@@ -2,6 +2,8 @@
    require_once __DIR__ . '/../classes/Database.php';
    require_once __DIR__ . '/../classes/Theme.php';
    require_once __DIR__ . '/../classes/Article.php';
+    require_once __DIR__ . '/../classes/Commentaire.php';
+
 
   
 
@@ -14,6 +16,8 @@
     if(isset($_POST['like'])){
         $articles = Article:: rechercherParTitre($pdo, $_POST['like'], $id_theme);
     }
+
+
 
 
 
@@ -42,7 +46,12 @@
             <h1 class="text-4xl font-extrabold text-red-700 mb-3">Blog Location de Voitures</h1>
             <p class="text-gray-200">Découvrez nos articles sur les véhicules et conseils de location</p>
         </div>
-
+    
+    <div>
+           <button class="bg-red-700 text-white px-6 py-2 rounded-xl hover:bg-red-800 transition flex justify-end items-end ">
+            <a href="ajout_article.php?id_theme=<?= $id_theme ?>">
+                Ajouter un article</a></button> 
+        </div>
 
                 <div class="max-w-2xl mx-auto my-8">
                     <form  method="POST" class="flex items-center">
@@ -52,10 +61,10 @@
                     </form>
                 </div>
 
-
+         <a href="article_details.php?id=<?= $id_theme ?>">
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
 
-                <?php if(!empty($articles))?>
+                <?php if(!empty($articles)):?>
              <?php foreach($articles as $art):?>
             <div class="bg-white rounded-2xl shadow-lg p-6 hover:shadow-2xl transition">
                 <div class="flex justify-between items-center mb-3">
@@ -71,8 +80,10 @@
                 </div>
             </div>
             <?php endforeach;?>
+            <?php endif;?>
 
         </div>
+        </a>
 
     </section>
 

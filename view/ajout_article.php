@@ -1,6 +1,32 @@
 <?php
+   require_once __DIR__ . '/../classes/Database.php';
+   require_once __DIR__ . '/../classes/Theme.php';
+   require_once __DIR__ . '/../classes/Article.php';
   
 
+
+     
+    $themes = Theme::listerTousActifs($pdo);
+
+   //print_r($themes);
+//    foreach($themes as $theme){
+//     echo($theme->getIdTheme());
+//    }
+
+
+$article = new Article();
+
+if(isset($_POST["ajouter"])){
+    $article->setIdTheme($_POST['id_theme']);
+     $article->setTitre($_POST['titre']);
+      $article->setContenu($_POST['contenu']);
+
+       $article->create($pdo);
+}
+
+
+
+   
 
 ?>
 
@@ -41,32 +67,15 @@
                 <label class="block text-sm font-medium text-gray-700 mb-1">
                     Thème
                 </label>
-                <select name="theme" required class="w-full px-4 py-2 border rounded-lg bg-white focus:ring focus:ring-red-300 focus:outline-none">
-                    <option value="">-- Choisir un thème --</option>
-                    <option value="SUV">SUV</option>
-                    <option value="Citadine">Citadine</option>
-                    <option value="Luxe">Luxe</option>
-                    <option value="Électrique">Électrique</option>
+                <select name="id_theme"  required class="w-full px-4 py-2 border rounded-lg text-black focus:ring focus:ring-red-300 focus:outline-none">
+                <option value="">-- Choisir un thème --</option>
+                <?php foreach($themes as $theme):?>
+                 <option value="<?= $theme->getIdTheme(); ?>"><?= htmlspecialchars($theme->getTitre()); ?></option> 
+                <?php endforeach;?>
                 </select>
-                <?php foreach()?>
-                <input type="checkbox" value="2">
-                </div>
-
-                <!-- Tags -->
-                <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">
-                    Tags
-                </label>
-                <input type="text" name="tags" placeholder="ex: location, voiture, luxe"
-                        class="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-red-300 focus:outline-none">
-                <p class="text-xs text-gray-500 mt-1">
-                    Sépare les tags par des virgules
-                </p>
-                </div>
-
                 <!-- Bouton -->
-                <button type="submit"
-                        class="w-full bg-red-700 text-white py-2 rounded-lg font-semibold hover:bg-red-800 transition">
+                <button type="submit" name="ajouter"
+                        class=" mt-9 w-full bg-red-700 text-white py-2 rounded-lg font-semibold hover:bg-red-800 transition">
                 Publier l'article
                 </button>
 

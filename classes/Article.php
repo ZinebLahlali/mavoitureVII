@@ -92,7 +92,7 @@
    }
     
    public static function listerParTheme($pdo, $id_theme)
-   {   $query = 'SELECT a.*, t.titre, a.contenu, a.date_publication, a.tags
+   {   $query = 'SELECT a.*, t.titre
        FROM themes t
        INNER JOIN articles a ON t.id_theme = a.id_theme WHERE a.id_theme=:id';
        $stmt = $pdo->prepare($query);
@@ -149,12 +149,20 @@
      $stmt->execute([$like, $id_theme]);
 
      return $stmt->fetchAll(PDO::FETCH_CLASS, "Article");
-
-     
-
-
-
   }
+
+    public function create($pdo)
+    { $sql = 'INSERT INTO articles( id_theme, titre, contenu) VALUES (:id_theme, :titre, :contenu)';
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([
+          ':id_theme' => $this->getIdTheme(),
+          ':titre' => $this->getTitre(),
+          ':contenu' => $this->getContenu()
+          
+
+        ]);
+
+    }
 
 
 

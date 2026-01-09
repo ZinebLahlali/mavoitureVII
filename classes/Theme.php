@@ -6,13 +6,13 @@ class Theme
    private $actif;
 
 
- public function __construct($id_theme = '', $titre = '', $description = '', $actif = '')
- {  $this->id_theme = $id_theme;
-    $this->titre = $titre;
-    $this->description = $description;
-    $this->actif = $actif;
+//  public function __construct($id_theme = '', $titre = '', $description = '', $actif = '')
+//  {  $this->id_theme = $id_theme;
+//     $this->titre = $titre;
+//     $this->description = $description;
+//     $this->actif = $actif;
 
- }
+//  }
 
  //getters toujour return a //value// 
 
@@ -67,13 +67,13 @@ class Theme
     $stmt = $pdo->prepare($query);
     $stmt->execute();
 
-    $resulta = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    $themes = [];
-    foreach($resulta as $row){
-        $theme = new Theme($row["id_theme"], $row["titre"], $row["description"], $row["actif"]);
+    $themes = $stmt->fetchAll(PDO::FETCH_CLASS, "Theme");
+   //  $themes = [];
+   //  foreach($resulta as $row){
+   //      $theme = new Theme($row["id_theme"], $row["titre"], $row["description"], $row["actif"]);
 
-        $themes[] = $theme;
-    }
+   //      $themes[] = $theme;
+   //  }
     return $themes;
     
  }
